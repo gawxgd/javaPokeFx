@@ -25,8 +25,8 @@ public class PokeApplication extends Application {
         // Set a larger window size
         stage.setTitle("Pokemon Info");
         stage.setScene(scene);
-        stage.setWidth(600);  // Set the window width
-        stage.setHeight(400); // Set the window height
+        stage.setWidth(1200);  // Set the window width
+        stage.setHeight(800); // Set the window height
         stage.show();
 
         // Publish event to notify stage is ready
