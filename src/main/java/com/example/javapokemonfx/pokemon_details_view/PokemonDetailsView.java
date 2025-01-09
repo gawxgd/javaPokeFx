@@ -45,6 +45,9 @@ public class PokemonDetailsView {
     private ApplicationContext applicationContext;
 
     private String pokemonNameId = "pikachu";
+    private String baseImageUrl = "";
+    private int happinessLevel = 1;
+
 
     // Set the details for the selected Pokémon
     public void setPokemonDetails(String pokemonNameId) {
@@ -62,7 +65,9 @@ public class PokemonDetailsView {
     public void handlePokemonDetailsEvent(PokemonService.PokemonDetailsEvent event) {
         Platform.runLater(() -> {
             var details = event.details();
-           updatePokemonDetails(details.name(), details.baseExperience(),details.height(),details.weight(),details.imageUrl());
+            baseImageUrl = details.imageUrl();
+            System.out.println("Base URL: " + baseImageUrl);
+            updatePokemonDetails(details.name(), details.baseExperience(),details.height(),details.weight(),details.imageUrl());
         });
     }
 
@@ -72,12 +77,22 @@ public class PokemonDetailsView {
         pokemonHeight.setText("Height: " + height + " meters");
         pokemonWeight.setText("Weight: " + weight + " kg");
         pokemonImage.setImage(new Image(imageUrl));
+
+        //System.out.println("Generated URL: " + imageUrl);
     }
 
     @FXML
     private void onFeedButtonClicked() {
-        // Handle feeding the Pokémon
-        // For example, show an alert:
+        happinessLevel++;
+        if(happinessLevel == 4) {
+            happinessLevel = 1;
+        }
+        String newImageUrl = generatePokemonImageUrl(baseImageUrl, happinessLevel);
+        pokemonImage.setImage(new Image(newImageUrl));
+
+
+        //System.out.println("Generated URL: " + newImageUrl);
+
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Feed Pokémon");
         alert.setHeaderText("You have fed the Pokémon!");
@@ -86,4 +101,56 @@ public class PokemonDetailsView {
 
         // Implement additional feeding logic here
     }
+
+    private String generatePokemonImageUrl(String baseImageUrl, int evolutionStage) {
+
+        if (baseImageUrl == null || baseImageUrl.isEmpty()) {
+            return "";
+        }
+
+        String id = extractPokemonIdFromUrl(baseImageUrl);
+
+        String baseUrlPart = baseImageUrl.substring(0, baseImageUrl.lastIndexOf(id));
+
+        String extensionPart = baseImageUrl.substring(baseImageUrl.lastIndexOf(".png"));
+
+        String evolutionUrl;
+        switch (evolutionStage) {
+            case 1:
+                // Zwykły obrazek
+                evolutionUrl = baseUrlPart + id + extensionPart;
+                break;
+            case 2:
+                // Official artwork
+                evolutionUrl = baseUrlPart + "other/official-artwork/" + id + extensionPart;
+                break;
+            case 3:
+                // Shiny version
+                evolutionUrl = baseUrlPart + "shiny/" + id + extensionPart;
+                break;
+            default:
+                // Domyślnie wracamy do zwykłego obrazka
+                evolutionUrl = baseUrlPart + id + extensionPart;
+        }
+
+        return evolutionUrl;
+    }
+
+    public String extractPokemonIdFromUrl(String url) {
+        try {
+            System.out.println("Generated URL: " + url);
+
+            String withoutExtension = url.substring(0, url.lastIndexOf(".png"));
+
+            String[] urlParts = withoutExtension.split("/");
+            return urlParts[urlParts.length - 1];
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid URL format: cannot find ID in the URL", e);
+        }
+    }
+
+
+
+
+
 }
