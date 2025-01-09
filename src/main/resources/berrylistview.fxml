@@ -1,0 +1,47 @@
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.javapokemonfx.berry_list_view.BerryListView" spacing="10">
+    <!-- Status Label for Loading -->
+    <Label fx:id="statusLabel" text="Loading Berry list..." />
+
+    <!-- Filters Section -->
+    <HBox spacing="10">
+        <!-- Name Filter -->
+        <VBox spacing="5">
+            <Label text="Search by Name" />
+            <TextField fx:id="filterTextField" promptText="Search by Name" />
+        </VBox>
+
+        <VBox spacing="5">
+            <Label text="Min Growth" />
+            <TextField fx:id="minGrowthTimeFilterTextField" promptText="Min Growth" />
+            <Label text="Max Growth" />
+            <TextField fx:id="maxGrowthTimeFilterTextField" promptText="Max Growth" />
+        </VBox>
+
+        <VBox spacing="5">
+            <Label text="Min Harvest" />
+            <TextField fx:id="minHarvestFilterTextField" promptText="Min Harvest" />
+            <Label text="Max Harvest" />
+            <TextField fx:id="maxHarvestFilterTextField" promptText="Max Harvest" />
+        </VBox>
+
+        <VBox spacing="5">
+            <Label text="Min Gift" />
+            <TextField fx:id="minGiftFilterTextField" promptText="Min Gift" />
+            <Label text="Max Gift" />
+            <TextField fx:id="maxGiftFilterTextField" promptText="Max Gift" />
+        </VBox>
+    </HBox>
+
+    <!-- Clear Filters Button -->
+    <Button fx:id="clearFiltersButton" text="Clear Filters" onAction="#handleClearFilters" />
+
+    <!-- List View for Berry -->
+    <ListView fx:id="berryListView" />
+</VBox>

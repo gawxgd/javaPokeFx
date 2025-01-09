@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
 
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.javapokemonfx.pokemon_list_view.PokemonListView" spacing="10">
     <!-- Status Label for Loading -->
@@ -40,6 +41,9 @@
             <TextField fx:id="maxExperienceFilterTextField" promptText="Max Experience" />
         </VBox>
     </HBox>
+
+    <!-- Clear Filters Button -->
+    <Button fx:id="clearFiltersButton" text="Clear Filters" onAction="#handleClearFilters" />
 
     <!-- List View for Pokémon -->
     <ListView fx:id="pokemonListView" />

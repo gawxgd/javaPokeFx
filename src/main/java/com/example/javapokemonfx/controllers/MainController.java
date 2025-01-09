@@ -1,6 +1,7 @@
 package com.example.javapokemonfx.controllers;
 
 import com.example.javapokemonfx.MainView;
+import com.example.javapokemonfx.berry_list_view.BerryListView;
 import com.example.javapokemonfx.pokemon_details_view.PokemonDetailsView;
 import com.example.javapokemonfx.pokemon_list_view.PokemonListView;
 import javafx.fxml.FXML;
@@ -31,7 +32,7 @@ public class MainController {
     @FXML
     public void initialize() {
         // Add navigation items
-        sidebar.getItems().addAll(MainView.viewName, PokemonListView.viewName);
+        sidebar.getItems().addAll(MainView.viewName, PokemonListView.viewName, BerryListView.viewName);
 
         // Handle sidebar selection
         sidebar.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
@@ -64,6 +65,7 @@ public class MainController {
             }
             case PokemonListView.viewName -> NavigateToPokemonList();
             case PokemonDetailsView.viewName -> NavigateToPokemonDetails(args);
+            case BerryListView.viewName -> NavigateToBerriesList();
 
             default -> throw new IllegalArgumentException("Unknown view: " + viewName);
         }
@@ -106,4 +108,15 @@ public class MainController {
             e.printStackTrace();
         }
     }
+
+    private void NavigateToBerriesList(){
+        FXMLLoader berriesLoader = new FXMLLoader(getClass().getResource(BerryListView.fxmlName));
+        berriesLoader.setControllerFactory(applicationContext::getBean);
+        try {
+            contentArea.getChildren().add(berriesLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
