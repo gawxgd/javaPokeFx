@@ -92,6 +92,19 @@ public class PokemonListView {
         mainController.switchView(PokemonDetailsView.viewName, pokemonName);
     }
 
+    @FXML
+    private void handleClearFilters() {
+        filterTextField.clear();
+        minHeightFilterTextField.clear();
+        maxHeightFilterTextField.clear();
+        minWeightFilterTextField.clear();
+        maxWeightFilterTextField.clear();
+        minExperienceFilterTextField.clear();
+        maxExperienceFilterTextField.clear();
+
+        filterPokemonList();
+    }
+
     private void filterPokemonList() {
         if (allPokemons != null) {
             String nameFilter = filterTextField.getText().toLowerCase();
@@ -146,10 +159,10 @@ public class PokemonListView {
         if (allPokemons != null) {
             pokeNames = allPokemons.stream()
                     .filter(Objects::nonNull)
-                    .map(pokemon -> String.format("%s (Height: %.1f, Weight: %.1f, Exp: %d)",
+                    .map(pokemon -> String.format("%s (Height: %d, Weight: %d, Exp: %d)",
                             pokemon.getName() != null ? pokemon.getName() : "Unknown",
-                            pokemon.getHeight() != null ? pokemon.getHeight() : 0.0,
-                            pokemon.getWeight() != null ? pokemon.getWeight() : 0.0,
+                            pokemon.getHeight() != null ? pokemon.getHeight() : 0,
+                            pokemon.getWeight() != null ? pokemon.getWeight() : 0,
                             pokemon.getBaseExperience() != null ? pokemon.getBaseExperience() : 0))
                     .toList();
         } else {

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import skaro.pokeapi.client.PokeApiClient;
 import skaro.pokeapi.resource.NamedApiResource;
 import skaro.pokeapi.resource.NamedApiResourceList;
+import skaro.pokeapi.resource.berry.Berry;
 import skaro.pokeapi.resource.pokemon.Pokemon;
 
 import java.util.List;
@@ -52,6 +53,23 @@ public class PokemonService {
                 .subscribe();
     }
 
+    public void fetchBerry(String berryName) {
+        pokeApiClient.getResource(Berry.class, berryName)
+                .doOnNext(berry -> eventPublisher.publishEvent(new BerryEvent(berry)))
+                .subscribe();
+        }
+
+    public void fetchBerryNameList() {
+        pokeApiClient.getResource(Berry.class)
+                .map(NamedApiResourceList::getResults)
+                .map(resources -> resources.stream()
+                        .map(NamedApiResource::getName)
+                        .collect(Collectors.toList()))
+                .doOnNext(names -> {
+                    eventPublisher.publishEvent(new BerryListEvent(names));})
+                .subscribe();
+    }
+
     public record PokemonInfoEvent(Pokemon pokemon) {
     }
 
@@ -63,4 +81,8 @@ public class PokemonService {
 
     public record PokemonDetailsEvent(PokemonDetails details) {
     }
+
+    public record BerryEvent(Berry berry) {}
+
+    public record BerryListEvent(List<String> berryName) {}
 }
