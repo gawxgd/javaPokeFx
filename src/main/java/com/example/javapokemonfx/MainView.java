@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class MainView {
 
+    public static final String viewName = "Main View";
+    public static final String fxmlName = "/mainview.fxml";
+
     @FXML
     private Button helloButton;
 
@@ -41,6 +44,6 @@ public class MainView {
 
     @EventListener
     public void handlePokemonInfoEvent(PokemonService.PokemonInfoEvent event) {
-        Platform.runLater(() -> pokemonInfoLabel.setText(event.pokemonInfo()));
+        Platform.runLater(() -> pokemonInfoLabel.setText(event.pokemon().getName()));
     }
 }

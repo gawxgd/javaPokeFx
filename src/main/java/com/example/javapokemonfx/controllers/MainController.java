@@ -1,5 +1,8 @@
 package com.example.javapokemonfx.controllers;
 
+import com.example.javapokemonfx.MainView;
+import com.example.javapokemonfx.pokemon_details_view.PokemonDetailsView;
+import com.example.javapokemonfx.pokemon_list_view.PokemonListView;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListView;
@@ -9,6 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Objects;
 
 @Component
 public class MainController {
@@ -22,10 +26,12 @@ public class MainController {
     @Autowired
     private ApplicationContext applicationContext;
 
+    @Autowired PokemonDetailsView pokemonDetailsView;
+
     @FXML
     public void initialize() {
         // Add navigation items
-        sidebar.getItems().addAll("Main View", "Pokemon List");
+        sidebar.getItems().addAll(MainView.viewName, PokemonListView.viewName);
 
         // Handle sidebar selection
         sidebar.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
@@ -35,15 +41,20 @@ public class MainController {
         });
 
         // Load the default view
-        switchView("Main View");
+        switchView(MainView.viewName);
     }
 
-    private void switchView(String viewName) {
+    public void switchView(String viewName)
+    {
+        switchView(viewName,"");
+    }
+
+    public void switchView(String viewName, String args) {
         contentArea.getChildren().clear(); // Clear the current view
 
         switch (viewName) {
-            case "Main View" -> {
-                FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/mainview.fxml"));
+            case MainView.viewName -> {
+                FXMLLoader mainLoader = new FXMLLoader(getClass().getResource(MainView.fxmlName));
                 mainLoader.setControllerFactory(applicationContext::getBean);
                 try {
                     contentArea.getChildren().add(mainLoader.load());
@@ -51,16 +62,48 @@ public class MainController {
                     e.printStackTrace();
                 }
             }
-            case "Pokemon List" -> {
-                FXMLLoader pokemonLoader = new FXMLLoader(getClass().getResource("/pokemonlistview.fxml"));
-                pokemonLoader.setControllerFactory(applicationContext::getBean);
-                try {
-                    contentArea.getChildren().add(pokemonLoader.load());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            case PokemonListView.viewName -> NavigateToPokemonList();
+            case PokemonDetailsView.viewName -> NavigateToPokemonDetails(args);
+
             default -> throw new IllegalArgumentException("Unknown view: " + viewName);
+        }
+    }
+
+    private void NavigateToPokemonList()
+    {
+        FXMLLoader pokemonLoader = new FXMLLoader(getClass().getResource(PokemonListView.fxmlName));
+        pokemonLoader.setControllerFactory(applicationContext::getBean);
+        try {
+            contentArea.getChildren().add(pokemonLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void NavigateToPokemonDetails(String args){
+        FXMLLoader pokemonDetailsLoader = new FXMLLoader(getClass().getResource(PokemonDetailsView.fxmlName));
+
+        if(!Objects.equals(args, ""))
+        {
+            var argsTab = args.split(" ");
+            String finalArgs = argsTab[0]; // first is name
+
+            pokemonDetailsLoader.setControllerFactory(controllerClass -> {
+                if (controllerClass == PokemonDetailsView.class) {
+                    PokemonDetailsView controller = applicationContext.getBean(PokemonDetailsView.class);
+                    controller.setPokemonDetails(finalArgs);
+                    return controller;
+                }
+                return null;
+            });
+        }
+        else{
+            pokemonDetailsLoader.setControllerFactory(applicationContext::getBean);
+        }
+        try {
+            contentArea.getChildren().add(pokemonDetailsLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

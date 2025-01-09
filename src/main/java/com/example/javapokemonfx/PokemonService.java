@@ -22,32 +22,45 @@ public class PokemonService {
 
     public void fetchAndPrintPokemon(String pokemonName) {
         pokeApiClient.getResource(Pokemon.class, pokemonName)
-                .map(pokemon -> String.format(
-                        "Name: %s\nBase Experience: %d\nHeight: %d\nWeight: %d",
-                        pokemon.getName(),
-                        pokemon.getBaseExperience(),
-                        pokemon.getHeight(),
-                        pokemon.getWeight()))
-                .doOnNext(info -> eventPublisher.publishEvent(new PokemonInfoEvent(info)))  // Publish the event to notify about the Pokémon info
+                .doOnNext(pokemon -> eventPublisher.publishEvent(new PokemonInfoEvent(pokemon)))
                 .subscribe();
     }
 
     public void fetchPokemonList(int limit, int offset) {
         pokeApiClient.getResource(Pokemon.class)
-                .map(NamedApiResourceList::getResults) // Extract the list of `NamedApiResource`
+                .map(NamedApiResourceList::getResults)
                 .map(resources -> resources.stream()
-                        .map(NamedApiResource::getName) // Extract Pokémon names
-                        .collect(Collectors.toList())) // Convert to a list of names
+                        .map(NamedApiResource::getName)
+                        .collect(Collectors.toList()))
                 .doOnNext(names -> {
-                    System.out.println("Fetched Pokémon List: " + names);
-                    eventPublisher.publishEvent(new PokemonListEvent(names));}) // Publish the Pokémon list event
+                    eventPublisher.publishEvent(new PokemonListEvent(names));})
                 .subscribe();
     }
 
+    public void fetchPokemonDetails(String pokemonId) {
+        pokeApiClient.getResource(Pokemon.class, pokemonId)
+                .map(pokemon -> {
+                    String name = pokemon.getName();
+                    String baseExperience = String.valueOf(pokemon.getBaseExperience());
+                    String height = String.valueOf(pokemon.getHeight());
+                    String weight = String.valueOf(pokemon.getWeight());
+                    String imageUrl = pokemon.getSprites().getFrontDefault();
 
-    public record PokemonInfoEvent(String pokemonInfo) {
+                    return new PokemonDetails(name, baseExperience, height, weight, imageUrl);
+                })
+                .doOnNext(details -> eventPublisher.publishEvent(new PokemonDetailsEvent(details)))
+                .subscribe();
+    }
+
+    public record PokemonInfoEvent(Pokemon pokemon) {
     }
 
     public record PokemonListEvent(List<String> pokemonNames) {
+    }
+
+    public record PokemonDetails(String name, String baseExperience, String height, String weight, String imageUrl) {
+    }
+
+    public record PokemonDetailsEvent(PokemonDetails details) {
     }
 }
