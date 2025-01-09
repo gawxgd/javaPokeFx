@@ -1,7 +1,5 @@
 package com.example.javapokemonfx.controllers;
 
-import com.example.javapokemonfx.MainView;
-import com.example.javapokemonfx.pokemon_list_view.PokemonListView;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListView;

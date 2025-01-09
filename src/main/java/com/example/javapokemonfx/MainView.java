@@ -41,8 +41,6 @@ public class MainView {
 
     @EventListener
     public void handlePokemonInfoEvent(PokemonService.PokemonInfoEvent event) {
-        Platform.runLater(() -> {
-            pokemonInfoLabel.setText(event.pokemonInfo());
-        });
+        Platform.runLater(() -> pokemonInfoLabel.setText(event.pokemonInfo()));
     }
 }
