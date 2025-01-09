@@ -4,7 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import skaro.pokeapi.client.PokeApiClient;
+import skaro.pokeapi.resource.NamedApiResource;
+import skaro.pokeapi.resource.NamedApiResourceList;
 import skaro.pokeapi.resource.pokemon.Pokemon;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PokemonService {
@@ -27,15 +32,22 @@ public class PokemonService {
                 .subscribe();
     }
 
-    public static class PokemonInfoEvent {
-        private final String pokemonInfo;
+    public void fetchPokemonList(int limit, int offset) {
+        pokeApiClient.getResource(Pokemon.class)
+                .map(NamedApiResourceList::getResults) // Extract the list of `NamedApiResource`
+                .map(resources -> resources.stream()
+                        .map(NamedApiResource::getName) // Extract Pokémon names
+                        .collect(Collectors.toList())) // Convert to a list of names
+                .doOnNext(names -> {
+                    System.out.println("Fetched Pokémon List: " + names);
+                    eventPublisher.publishEvent(new PokemonListEvent(names));}) // Publish the Pokémon list event
+                .subscribe();
+    }
 
-        public PokemonInfoEvent(String pokemonInfo) {
-            this.pokemonInfo = pokemonInfo;
-        }
 
-        public String getPokemonInfo() {
-            return pokemonInfo;
-        }
+    public record PokemonInfoEvent(String pokemonInfo) {
+    }
+
+    public record PokemonListEvent(List<String> pokemonNames) {
     }
 }

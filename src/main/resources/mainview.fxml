@@ -8,16 +8,7 @@
 <?import javafx.scene.layout.StackPane?>
 
 <?import java.lang.String?>
-<BorderPane fx:id="root" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javapokemonfx.MainView">
-    <!-- Sidebar -->
-    <left>
-        <ListView fx:id="sidebar" maxWidth="200" BorderPane.alignment="CENTER">
-            <String fx:value="Sidebar Item 1"/>
-            <String fx:value="Sidebar Item 2"/>
-            <String fx:value="Sidebar Item 3"/>
-        </ListView>
-    </left>
-
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javapokemonfx.MainView">
     <!-- Main Content -->
     <center>
         <StackPane>
