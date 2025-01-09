@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class MainView {
 
+    public static final String viewName = "Main View";
+    public static final String fxmlName = "/mainview.fxml";
+
     @FXML
     private Button helloButton;
 

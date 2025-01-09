@@ -1,17 +1,22 @@
 package com.example.javapokemonfx.pokemon_list_view;
 
 import com.example.javapokemonfx.PokemonService;
+import com.example.javapokemonfx.controllers.MainController;
+import com.example.javapokemonfx.pokemon_details_view.PokemonDetailsView;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PokemonListView {
+    public static final  String viewName = "Pokemon List";
+    public static final String fxmlName = "/pokemonlistview.fxml";
 
     @FXML
     private ListView<String> pokemonListView;
@@ -24,6 +29,9 @@ public class PokemonListView {
 
     @Autowired
     private PokemonService pokemonService;
+
+    @Autowired
+    private ApplicationContext applicationContext;
 
     public void initialize() {
         fetchPokemonList();
@@ -39,7 +47,13 @@ public class PokemonListView {
         String selectedPokemon = pokemonListView.getSelectionModel().getSelectedItem();
         if (selectedPokemon != null) {
             statusLabel.setText("Selected: " + selectedPokemon);
+            switchViewToPokemonDetails(selectedPokemon);
         }
+    }
+
+    private void switchViewToPokemonDetails(String pokemonName) {
+        MainController mainController = applicationContext.getBean(MainController.class);
+        mainController.switchView(PokemonDetailsView.viewName, pokemonName);
     }
 
     @EventListener
