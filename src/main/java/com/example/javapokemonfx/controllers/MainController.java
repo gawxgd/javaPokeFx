@@ -4,6 +4,7 @@ import com.example.javapokemonfx.MainView;
 import com.example.javapokemonfx.berry_list_view.BerryListView;
 import com.example.javapokemonfx.pokemon_details_view.PokemonDetailsView;
 import com.example.javapokemonfx.pokemon_list_view.PokemonListView;
+import com.example.javapokemonfx.team_creation_view.TeamCreationView;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListView;
@@ -32,7 +33,7 @@ public class MainController {
     @FXML
     public void initialize() {
         // Add navigation items
-        sidebar.getItems().addAll(MainView.viewName, PokemonListView.viewName, BerryListView.viewName);
+        sidebar.getItems().addAll(MainView.viewName, PokemonListView.viewName, BerryListView.viewName, TeamCreationView.viewName);
 
         // Handle sidebar selection
         sidebar.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
@@ -66,6 +67,7 @@ public class MainController {
             case PokemonListView.viewName -> NavigateToPokemonList();
             case PokemonDetailsView.viewName -> NavigateToPokemonDetails(args);
             case BerryListView.viewName -> NavigateToBerriesList();
+            case TeamCreationView.viewName -> NavigateToTeamCreation();
 
             default -> throw new IllegalArgumentException("Unknown view: " + viewName);
         }
@@ -118,5 +120,18 @@ public class MainController {
             e.printStackTrace();
         }
     }
+
+    private void NavigateToTeamCreation() {
+        FXMLLoader teamCreationLoader = new FXMLLoader(getClass().getResource(TeamCreationView.fxmlName)); // TeamCreationView.fxmlName to ścieżka do pliku FXML dla widoku drużyny
+
+        teamCreationLoader.setControllerFactory(applicationContext::getBean); // Używamy controllerFactory, by Spring mógł zarządzać zależnościami
+
+        try {
+            contentArea.getChildren().add(teamCreationLoader.load()); // Dodanie widoku drużyny do contentArea
+        } catch (IOException e) {
+            e.printStackTrace(); // Obsługa wyjątku w przypadku błędu ładowania widoku
+        }
+    }
+
 
 }
