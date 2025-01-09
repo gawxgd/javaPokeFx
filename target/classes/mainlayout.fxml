@@ -1,0 +1,11 @@
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.ListView?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.javapokemonfx.controllers.MainController">
+    <left>
+        <ListView fx:id="sidebar" />
+    </left>
+    <center>
+        <StackPane fx:id="contentArea" />
+    </center>
+</BorderPane>
