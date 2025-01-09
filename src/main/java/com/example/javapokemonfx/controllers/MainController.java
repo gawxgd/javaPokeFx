@@ -85,10 +85,13 @@ public class MainController {
 
         if(!Objects.equals(args, ""))
         {
+            var argsTab = args.split(" ");
+            String finalArgs = argsTab[0]; // first is name
+
             pokemonDetailsLoader.setControllerFactory(controllerClass -> {
                 if (controllerClass == PokemonDetailsView.class) {
                     PokemonDetailsView controller = applicationContext.getBean(PokemonDetailsView.class);
-                    controller.setPokemonDetails(args);
+                    controller.setPokemonDetails(finalArgs);
                     return controller;
                 }
                 return null;

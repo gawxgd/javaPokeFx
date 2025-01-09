@@ -22,13 +22,7 @@ public class PokemonService {
 
     public void fetchAndPrintPokemon(String pokemonName) {
         pokeApiClient.getResource(Pokemon.class, pokemonName)
-                .map(pokemon -> String.format(
-                        "Name: %s\nBase Experience: %d\nHeight: %d\nWeight: %d",
-                        pokemon.getName(),
-                        pokemon.getBaseExperience(),
-                        pokemon.getHeight(),
-                        pokemon.getWeight()))
-                .doOnNext(info -> eventPublisher.publishEvent(new PokemonInfoEvent(info)))
+                .doOnNext(pokemon -> eventPublisher.publishEvent(new PokemonInfoEvent(pokemon)))
                 .subscribe();
     }
 
@@ -39,7 +33,6 @@ public class PokemonService {
                         .map(NamedApiResource::getName)
                         .collect(Collectors.toList()))
                 .doOnNext(names -> {
-                    System.out.println("Fetched Pokémon List: " + names);
                     eventPublisher.publishEvent(new PokemonListEvent(names));})
                 .subscribe();
     }
@@ -59,7 +52,7 @@ public class PokemonService {
                 .subscribe();
     }
 
-    public record PokemonInfoEvent(String pokemonInfo) {
+    public record PokemonInfoEvent(Pokemon pokemon) {
     }
 
     public record PokemonListEvent(List<String> pokemonNames) {

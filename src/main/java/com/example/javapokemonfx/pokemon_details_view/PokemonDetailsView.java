@@ -5,6 +5,7 @@ import com.example.javapokemonfx.controllers.MainController;
 import com.example.javapokemonfx.pokemon_list_view.PokemonListView;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -71,5 +72,18 @@ public class PokemonDetailsView {
         pokemonHeight.setText("Height: " + height + " meters");
         pokemonWeight.setText("Weight: " + weight + " kg");
         pokemonImage.setImage(new Image(imageUrl));
+    }
+
+    @FXML
+    private void onFeedButtonClicked() {
+        // Handle feeding the Pokémon
+        // For example, show an alert:
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Feed Pokémon");
+        alert.setHeaderText("You have fed the Pokémon!");
+        alert.setContentText("The Pokémon is now happier.");
+        alert.showAndWait();
+
+        // Implement additional feeding logic here
     }
 }

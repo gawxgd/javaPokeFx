@@ -1,7 +1,46 @@
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.javapokemonfx.pokemon_list_view.PokemonListView">
+<?import javafx.scene.control.TextField?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.javapokemonfx.pokemon_list_view.PokemonListView" spacing="10">
+    <!-- Status Label for Loading -->
     <Label fx:id="statusLabel" text="Loading Pokémon list..." />
+
+    <!-- Filters Section -->
+    <HBox spacing="10">
+        <!-- Name Filter -->
+        <VBox spacing="5">
+            <Label text="Search by Name" />
+            <TextField fx:id="filterTextField" promptText="Search by Name" />
+        </VBox>
+
+        <!-- Height Filter (Min/Max) -->
+        <VBox spacing="5">
+            <Label text="Min Height" />
+            <TextField fx:id="minHeightFilterTextField" promptText="Min Height" />
+            <Label text="Max Height" />
+            <TextField fx:id="maxHeightFilterTextField" promptText="Max Height" />
+        </VBox>
+
+        <!-- Weight Filter (Min/Max) -->
+        <VBox spacing="5">
+            <Label text="Min Weight" />
+            <TextField fx:id="minWeightFilterTextField" promptText="Min Weight" />
+            <Label text="Max Weight" />
+            <TextField fx:id="maxWeightFilterTextField" promptText="Max Weight" />
+        </VBox>
+
+        <!-- Experience Filter (Min/Max) -->
+        <VBox spacing="5">
+            <Label text="Min Experience" />
+            <TextField fx:id="minExperienceFilterTextField" promptText="Min Experience" />
+            <Label text="Max Experience" />
+            <TextField fx:id="maxExperienceFilterTextField" promptText="Max Experience" />
+        </VBox>
+    </HBox>
+
+    <!-- List View for Pokémon -->
     <ListView fx:id="pokemonListView" />
 </VBox>
