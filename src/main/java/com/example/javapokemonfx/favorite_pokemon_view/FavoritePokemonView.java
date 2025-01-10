@@ -1,6 +1,7 @@
 package com.example.javapokemonfx.favorite_pokemon_view;
 
 import com.example.javapokemonfx.pokemon_details_view.PokemonDetailsView;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
@@ -52,6 +53,15 @@ public class FavoritePokemonView {
         alert.setTitle("Pokémon Removed");
         alert.setHeaderText("Pokémon Removed");
         alert.setContentText(selectedPokemon + " has been removed from your favorites.");
+        alert.showAndWait();
+    }
+
+    public void onClearButtonClicked(ActionEvent actionEvent) {
+
+        favoritePokemonList.getItems().clear();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Favorite Pokémon List cleared");
+        alert.setHeaderText("Favorite Pokémon is empty now");
         alert.showAndWait();
     }
 }
