@@ -46,10 +46,10 @@ public class BattleView {
     private ApplicationContext applicationContext;
 
     private List<Pokemon> opponentTeam;
-
+    private List<Pokemon> playerTeam;
     @EventListener
     public void handleStartBattle(StartBattleEvent event) {
-        List<Pokemon> playerTeam = event.getSelectedTeam();
+        playerTeam = event.getSelectedTeam();
         List<String> playerTeamNames = new ArrayList<>();
 
         if (playerTeam == null || playerTeam.isEmpty()) {
@@ -96,19 +96,19 @@ public class BattleView {
 
     @FXML
     private void handleFight() {
-        int playerTeamExperience = calculateTotalExperience(playerPokemonList.getItems());
-        int opponentTeamExperience = calculateTotalExperience(opponentPokemonList.getItems());
+        int playerTeamExperience = calculateTotalExperience(playerPokemonList.getItems(), playerTeam);
+        int opponentTeamExperience = calculateTotalExperience(opponentPokemonList.getItems(), opponentTeam);
 
         String result = playerTeamExperience > opponentTeamExperience ? "Player wins!" : "Opponent wins!";
 
         teamLabel.setText(result + " (Player Experience: " + playerTeamExperience + ", Opponent Experience: " + opponentTeamExperience + ")");
     }
 
-    private int calculateTotalExperience(List<String> pokemonNames) {
+    private int calculateTotalExperience(List<String> pokemonNames, List<Pokemon> team) {
         int totalExperience = 0;
 
         for (String name : pokemonNames) {
-            Pokemon pokemon = getPokemonByName(name);
+            Pokemon pokemon = getPokemonByName(name, team);
             if (pokemon != null) {
                 totalExperience += pokemon.getBaseExperience();
             }
@@ -117,8 +117,8 @@ public class BattleView {
         return totalExperience;
     }
 
-    private Pokemon getPokemonByName(String name) {
-        for (Pokemon pokemon : opponentTeam) {
+    private Pokemon getPokemonByName(String name, List<Pokemon> team) {
+        for (Pokemon pokemon : team) {
             if (pokemon.getName().equals(name)) {
                 return pokemon;
             }
