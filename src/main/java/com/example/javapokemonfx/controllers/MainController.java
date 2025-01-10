@@ -1,6 +1,7 @@
 package com.example.javapokemonfx.controllers;
 
 import com.example.javapokemonfx.MainView;
+import com.example.javapokemonfx.battle_view.BattleView;
 import com.example.javapokemonfx.berry_list_view.BerryListView;
 import com.example.javapokemonfx.pokemon_details_view.PokemonDetailsView;
 import com.example.javapokemonfx.pokemon_list_view.PokemonListView;
@@ -68,8 +69,19 @@ public class MainController {
             case PokemonDetailsView.viewName -> NavigateToPokemonDetails(args);
             case BerryListView.viewName -> NavigateToBerriesList();
             case TeamCreationView.viewName -> NavigateToTeamCreation();
+            case BattleView.viewName -> NavigateToBattle();
 
             default -> throw new IllegalArgumentException("Unknown view: " + viewName);
+        }
+    }
+
+    private void NavigateToBattle() {
+        FXMLLoader battleLoader = new FXMLLoader(getClass().getResource(BattleView.fxmlName));
+        battleLoader.setControllerFactory(applicationContext::getBean);
+        try {
+            contentArea.getChildren().add(battleLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -122,14 +134,13 @@ public class MainController {
     }
 
     private void NavigateToTeamCreation() {
-        FXMLLoader teamCreationLoader = new FXMLLoader(getClass().getResource(TeamCreationView.fxmlName)); // TeamCreationView.fxmlName to ścieżka do pliku FXML dla widoku drużyny
-
-        teamCreationLoader.setControllerFactory(applicationContext::getBean); // Używamy controllerFactory, by Spring mógł zarządzać zależnościami
+        FXMLLoader teamCreationLoader = new FXMLLoader(getClass().getResource(TeamCreationView.fxmlName));
+        teamCreationLoader.setControllerFactory(applicationContext::getBean);
 
         try {
-            contentArea.getChildren().add(teamCreationLoader.load()); // Dodanie widoku drużyny do contentArea
+            contentArea.getChildren().add(teamCreationLoader.load());
         } catch (IOException e) {
-            e.printStackTrace(); // Obsługa wyjątku w przypadku błędu ładowania widoku
+            e.printStackTrace();
         }
     }
 

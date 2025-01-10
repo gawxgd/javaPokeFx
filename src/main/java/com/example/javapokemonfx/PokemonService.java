@@ -70,6 +70,9 @@ public class PokemonService {
                 .subscribe();
     }
 
+    public Pokemon getRandomPokemon() {
+        return new Pokemon();
+    }
 
 
     public record PokemonInfoEvent(Pokemon pokemon) {

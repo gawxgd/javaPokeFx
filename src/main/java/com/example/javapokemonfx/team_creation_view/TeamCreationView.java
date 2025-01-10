@@ -1,13 +1,14 @@
 package com.example.javapokemonfx.team_creation_view;
 
 import com.example.javapokemonfx.PokemonService;
+import com.example.javapokemonfx.battle_view.BattleView;
+import com.example.javapokemonfx.battle_view.StartBattleEvent;
+import com.example.javapokemonfx.controllers.MainController;
+import com.example.javapokemonfx.pokemon_details_view.PokemonDetailsView;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -36,6 +37,9 @@ public class TeamCreationView {
     @FXML
     private TextArea teamDisplayArea;
 
+    @FXML
+    private Button battleButton;
+
     @Autowired
     private PokemonService pokemonService;
 
@@ -52,6 +56,9 @@ public class TeamCreationView {
 
         pokemonListView.setItems(FXCollections.observableArrayList());
         teams = new ArrayList<>();
+
+        //applicationContext.publishEvent(new StartBattleEvent(this, selectedPokemons));
+        battleButton.setOnAction(event -> handleStartBattle());
 
         fetchPokemonList();
         pokemonListView.getSelectionModel().setSelectionMode(javafx.scene.control.SelectionMode.MULTIPLE);
@@ -145,6 +152,22 @@ public class TeamCreationView {
         //System.out.println("Received PokemonInfoEvent for: " + event.pokemon().getName());
         allPokemons.add(event.pokemon());
         Platform.runLater(this::updatePokemonList);
+    }
+
+    @FXML
+    private void handleStartBattle() {
+        if (selectedPokemons.size() == 6) {
+            // Przejdź do BattlePage, wysyłając drużynę
+            applicationContext.publishEvent(new StartBattleEvent(this, selectedPokemons));
+            switchViewToBattle();
+        } else {
+            statusLabel.setText("Please select exactly 6 Pokémon.");
+        }
+    }
+
+    private void switchViewToBattle() {
+        MainController mainController = applicationContext.getBean(MainController.class);
+        mainController.switchView(BattleView.viewName);
     }
 
     public VBox getRoot() {

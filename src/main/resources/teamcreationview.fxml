@@ -12,4 +12,6 @@
     <ListView fx:id="pokemonListView" />
     <TextArea fx:id="teamDisplayArea" editable="false" prefHeight="100" prefWidth="300" visible="false" promptText="Your created team will be displayed here..." />
     <Button text="Create Team" onAction="#handleCreateTeam" />
+    <Button fx:id="battleButton" text="Start Battle" onAction="#handleStartBattle" />
+
 </VBox>
