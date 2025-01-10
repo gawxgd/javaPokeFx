@@ -2,6 +2,7 @@ package com.example.javapokemonfx.berry_list_view;
 
 import com.example.javapokemonfx.PokemonService;
 import com.example.javapokemonfx.controllers.MainController;
+import com.example.javapokemonfx.pokemon_details_view.PokemonDetailsView;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 public class BerryListView {
     public static final String viewName = "Berry List";
     public static final String fxmlName = "/berrylistview.fxml";
+    public static final String afterFeedViewName = "Feeded Pokemon";
 
     @FXML
     private TextField filterTextField;
@@ -59,6 +61,14 @@ public class BerryListView {
 
     private List<Berry> allBerries;
 
+    private String pokemonToFeed = "";
+
+    public void setPokemonToFeed(String PokemonName)
+    {
+        System.out.println("gowno4"+PokemonName);
+        pokemonToFeed = PokemonName;
+    }
+
     public void initialize() {
         allBerries = new ArrayList<>();
         fetchBerryList();
@@ -81,7 +91,15 @@ public class BerryListView {
         String selectedBerry = berryListView.getSelectionModel().getSelectedItem();
         if (selectedBerry != null) {
             statusLabel.setText("Selected: " + selectedBerry);
-            switchViewToBerryDetails(selectedBerry);
+            if(!Objects.equals(pokemonToFeed, ""))
+            {
+                var berryName = selectedBerry.split(" ")[0];
+
+                switchViewToFeedPokemon(pokemonToFeed+" "+berryName); //add the berry name and react in pokemon details
+            }
+            else {
+                switchViewToBerryDetails(selectedBerry);
+            }
         }
     }
 
@@ -89,6 +107,11 @@ public class BerryListView {
         MainController mainController = applicationContext.getBean(MainController.class);
        // mainController.switchView(PokemonDetailsView.viewName, pokemonName);
         Berry a = new Berry();
+    }
+
+    private void switchViewToFeedPokemon(String pokemonName) {
+        MainController mainController = applicationContext.getBean(MainController.class);
+        mainController.switchView(PokemonDetailsView.viewName, pokemonName);
     }
 
     @FXML

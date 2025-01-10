@@ -1,6 +1,7 @@
 package com.example.javapokemonfx.pokemon_details_view;
 
 import com.example.javapokemonfx.PokemonService;
+import com.example.javapokemonfx.berry_list_view.BerryListView;
 import com.example.javapokemonfx.controllers.MainController;
 import com.example.javapokemonfx.pokemon_list_view.PokemonListView;
 import javafx.application.Platform;
@@ -15,7 +16,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Component
@@ -51,16 +54,32 @@ public class PokemonDetailsView {
     private ApplicationContext applicationContext;
 
     private String pokemonNameId = "pikachu";
+    private String feedingBerryName = "";
     private String baseImageUrl = "";
     private int happinessLevel = 1;
+
+    private String feedingName = "";
 
     private Set<String> favoritePokemonSet = new HashSet<>();
 
 
     // Set the details for the selected Pokémon
     public void setPokemonDetails(String pokemonNameId) {
-        this.pokemonNameId = pokemonNameId;
-        pokemonService.fetchPokemonDetails(pokemonNameId);
+        feedingBerryName = "";
+        var pokeArgs = pokemonNameId.split(" ");
+        System.out.println(Arrays.toString(pokeArgs));
+        if(pokeArgs.length > 1)
+        {
+            this.pokemonNameId = pokeArgs[0];
+            feedingBerryName = pokeArgs[1];
+            feedingName = this.pokemonNameId;
+            pokemonService.fetchPokemonDetails(this.pokemonNameId);
+        }
+        else {
+            this.pokemonNameId = pokemonNameId;
+            feedingName = this.pokemonNameId;
+            pokemonService.fetchPokemonDetails(pokemonNameId);
+        }
     }
 
     @FXML
@@ -76,6 +95,9 @@ public class PokemonDetailsView {
             baseImageUrl = details.imageUrl();
             System.out.println("Base URL: " + baseImageUrl);
             updatePokemonDetails(details.name(), details.baseExperience(),details.height(),details.weight(),details.imageUrl());
+
+            if(!Objects.equals(feedingBerryName, ""))
+                feedPokemon();
         });
     }
 
@@ -89,8 +111,14 @@ public class PokemonDetailsView {
         //System.out.println("Generated URL: " + imageUrl);
     }
 
-    @FXML
-    private void onFeedButtonClicked() {
+    private void switchViewToBerryList(String pokemonName) {
+        MainController mainController = applicationContext.getBean(MainController.class);
+        System.out.println("gowno" + pokemonName);
+        mainController.switchView(BerryListView.afterFeedViewName, pokemonName);
+    }
+
+    private void feedPokemon()
+    {
         happinessLevel++;
         if(happinessLevel == 4) {
             happinessLevel = 1;
@@ -98,16 +126,16 @@ public class PokemonDetailsView {
         String newImageUrl = generatePokemonImageUrl(baseImageUrl, happinessLevel);
         pokemonImage.setImage(new Image(newImageUrl));
 
-
-        //System.out.println("Generated URL: " + newImageUrl);
-
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Feed Pokémon");
-        alert.setHeaderText("You have fed the Pokémon!");
+        alert.setHeaderText("You have fed the Pokémon with "+ feedingBerryName + "!");
         alert.setContentText("The Pokémon is now happier.");
         alert.showAndWait();
+    }
 
-        // Implement additional feeding logic here
+    @FXML
+    private void onFeedButtonClicked() {
+        switchViewToBerryList(feedingName);
     }
 
     private String generatePokemonImageUrl(String baseImageUrl, int evolutionStage) {

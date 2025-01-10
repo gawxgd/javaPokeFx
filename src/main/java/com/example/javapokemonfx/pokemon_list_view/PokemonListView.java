@@ -83,7 +83,10 @@ public class PokemonListView {
         String selectedPokemon = pokemonListView.getSelectionModel().getSelectedItem();
         if (selectedPokemon != null) {
             statusLabel.setText("Selected: " + selectedPokemon);
-            switchViewToPokemonDetails(selectedPokemon);
+            var selectedStringSplit = selectedPokemon.split(" ");
+            String pokemonName = selectedStringSplit[0];
+
+            switchViewToPokemonDetails(pokemonName);
         }
     }
 

@@ -69,10 +69,11 @@ public class MainController {
             }
             case PokemonListView.viewName -> NavigateToPokemonList();
             case PokemonDetailsView.viewName -> NavigateToPokemonDetails(args);
-            case BerryListView.viewName -> NavigateToBerriesList();
+            case BerryListView.viewName -> NavigateToBerriesList("");
             case TeamCreationView.viewName -> NavigateToTeamCreation();
             case BattleView.viewName -> NavigateToBattle();
             case FavoritePokemonView.viewName -> NavigateToFavorite();
+            case BerryListView.afterFeedViewName -> NavigateToBerriesList(args);
 
             default -> throw new IllegalArgumentException("Unknown view: " + viewName);
         }
@@ -110,17 +111,16 @@ public class MainController {
     }
 
     private void NavigateToPokemonDetails(String args){
+        System.out.println("Pokemon details are " + args);
         FXMLLoader pokemonDetailsLoader = new FXMLLoader(getClass().getResource(PokemonDetailsView.fxmlName));
 
         if(!Objects.equals(args, ""))
         {
-            var argsTab = args.split(" ");
-            String finalArgs = argsTab[0]; // first is name
 
             pokemonDetailsLoader.setControllerFactory(controllerClass -> {
                 if (controllerClass == PokemonDetailsView.class) {
                     PokemonDetailsView controller = applicationContext.getBean(PokemonDetailsView.class);
-                    controller.setPokemonDetails(finalArgs);
+                    controller.setPokemonDetails(args);
                     return controller;
                 }
                 return null;
@@ -136,9 +136,24 @@ public class MainController {
         }
     }
 
-    private void NavigateToBerriesList(){
+    private void NavigateToBerriesList(String args){
         FXMLLoader berriesLoader = new FXMLLoader(getClass().getResource(BerryListView.fxmlName));
-        berriesLoader.setControllerFactory(applicationContext::getBean);
+
+        if(!Objects.equals(args, ""))
+        {
+            System.out.println("gowno2" + args);
+            berriesLoader.setControllerFactory(controllerClass -> {
+                if (controllerClass == BerryListView.class) {
+                    BerryListView controller = applicationContext.getBean(BerryListView.class);
+                    controller.setPokemonToFeed(args);
+                    return controller;
+                }
+                return null;
+            });
+        }
+        else {
+            berriesLoader.setControllerFactory(applicationContext::getBean);
+        }
         try {
             contentArea.getChildren().add(berriesLoader.load());
         } catch (IOException e) {
