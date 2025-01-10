@@ -90,7 +90,6 @@ public class TeamCreationView {
                 }
             }
         }
-
         statusLabel.setText("Selected " + selectedPokemons.size() + " Pokémon, please choose " + (6 - selectedPokemons.size()) + " Pokemon more");
     }
 
@@ -110,12 +109,17 @@ public class TeamCreationView {
             });
 
             Alert teamAlert = new Alert(Alert.AlertType.INFORMATION);
-            teamAlert.setTitle("Your Team");
+            teamAlert.setTitle("Your Team is ready to battle");
             teamAlert.setHeaderText("Here is your team of Pokémon:");
             teamAlert.setContentText(teamInfo.toString());
             teamAlert.showAndWait();
         } else {
             statusLabel.setText("Please select exactly 6 Pokémon.");
+        }
+        if (selectedPokemons.size() == 6) {
+            battleButton.setVisible(true);
+        } else {
+            battleButton.setVisible(false);
         }
     }
 

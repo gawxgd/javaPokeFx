@@ -60,10 +60,10 @@ public class BattleView {
         for (Pokemon pokemon : playerTeam) {
             playerTeamNames.add(pokemon.getName());
 
-            System.out.println(pokemon.getName());
+            //System.out.println(pokemon.getName());
         }
 
-        playerPokemonList.getItems().setAll(playerTeamNames);
+        //playerPokemonList.getItems().setAll(playerTeamNames);
 
         opponentTeam = getRandomOpponentTeam(playerTeam);
         List<String> opponentTeamNames = new ArrayList<>();
@@ -71,7 +71,7 @@ public class BattleView {
             opponentTeamNames.add(pokemon.getName());
         }
 
-        opponentPokemonList.getItems().setAll(opponentTeamNames);
+        //opponentPokemonList.getItems().setAll(opponentTeamNames);
 
         Platform.runLater(() -> {
             playerPokemonList.getItems().setAll(playerTeamNames);
@@ -92,6 +92,39 @@ public class BattleView {
         }
 
         return randomTeam;
+    }
+
+    @FXML
+    private void handleFight() {
+        int playerTeamExperience = calculateTotalExperience(playerPokemonList.getItems());
+        int opponentTeamExperience = calculateTotalExperience(opponentPokemonList.getItems());
+
+        String result = playerTeamExperience > opponentTeamExperience ? "Player wins!" : "Opponent wins!";
+
+        teamLabel.setText(result + " (Player Experience: " + playerTeamExperience + ", Opponent Experience: " + opponentTeamExperience + ")");
+    }
+
+    private int calculateTotalExperience(List<String> pokemonNames) {
+        int totalExperience = 0;
+
+        for (String name : pokemonNames) {
+            Pokemon pokemon = getPokemonByName(name);
+            if (pokemon != null) {
+                totalExperience += pokemon.getBaseExperience();
+            }
+        }
+
+        return totalExperience;
+    }
+
+    private Pokemon getPokemonByName(String name) {
+        for (Pokemon pokemon : opponentTeam) {
+            if (pokemon.getName().equals(name)) {
+                return pokemon;
+            }
+        }
+
+        return null;
     }
 
 }
