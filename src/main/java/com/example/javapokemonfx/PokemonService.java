@@ -9,7 +9,9 @@ import skaro.pokeapi.resource.NamedApiResourceList;
 import skaro.pokeapi.resource.berry.Berry;
 import skaro.pokeapi.resource.pokemon.Pokemon;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,13 +23,28 @@ public class PokemonService {
     @Autowired
     private ApplicationEventPublisher eventPublisher;
 
+
+    private List<String> availablePokemonNames = new ArrayList<>();
+
     public void fetchAndPrintPokemon(String pokemonName) {
         pokeApiClient.getResource(Pokemon.class, pokemonName)
                 .doOnNext(pokemon -> eventPublisher.publishEvent(new PokemonInfoEvent(pokemon)))
                 .subscribe();
     }
-
     public void fetchPokemonList(int limit, int offset) {
+        pokeApiClient.getResource(Pokemon.class)
+                .map(NamedApiResourceList::getResults)
+                .map(resources -> resources.stream()
+                        .map(NamedApiResource::getName)
+                        .collect(Collectors.toList()))
+                .doOnNext(names -> {
+                    availablePokemonNames = names;  // Przechowuj dostępne nazwy Pokémonów
+                    eventPublisher.publishEvent(new PokemonListEvent(names));
+                })
+                .subscribe();
+    }
+
+    /*public void fetchPokemonList(int limit, int offset) {
         pokeApiClient.getResource(Pokemon.class)
                 .map(NamedApiResourceList::getResults)
                 .map(resources -> resources.stream()
@@ -36,7 +53,7 @@ public class PokemonService {
                 .doOnNext(names -> {
                     eventPublisher.publishEvent(new PokemonListEvent(names));})
                 .subscribe();
-    }
+    }*/
 
     public void fetchPokemonDetails(String pokemonId) {
         pokeApiClient.getResource(Pokemon.class, pokemonId)
@@ -71,7 +88,16 @@ public class PokemonService {
     }
 
     public Pokemon getRandomPokemon() {
-        return new Pokemon();
+        if (availablePokemonNames.isEmpty()) {
+            throw new IllegalStateException("Pokemon list is empty. Please fetch the list first.");
+        }
+
+        Random random = new Random();
+        String randomPokemonName = availablePokemonNames.get(random.nextInt(availablePokemonNames.size()));
+
+        // Pobieranie szczegółów losowego Pokémona
+        Pokemon randomPokemon = pokeApiClient.getResource(Pokemon.class, randomPokemonName).block();
+        return randomPokemon;
     }
 
 
