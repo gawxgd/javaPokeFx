@@ -178,6 +178,9 @@ public class PokemonListView {
 
     @EventListener
     public void handlePokemonListEvent(PokemonService.PokemonListEvent event) {
+        if (allPokemons == null) {
+            allPokemons = new ArrayList<>();
+        }
         Platform.runLater(() -> {
             allPokemonNames = event.pokemonNames();
             for(var name : event.pokemonNames()){
@@ -191,6 +194,9 @@ public class PokemonListView {
     @EventListener
     public void handlePokemonEvent(PokemonService.PokemonInfoEvent event)
     {
+        if (allPokemons == null) {
+            allPokemons = new ArrayList<>();
+        }
         allPokemons.add(event.pokemon());
         Platform.runLater(this::PokemonsToNames);
     }

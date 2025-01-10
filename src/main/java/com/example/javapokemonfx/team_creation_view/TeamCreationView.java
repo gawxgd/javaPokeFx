@@ -2,6 +2,7 @@ package com.example.javapokemonfx.team_creation_view;
 
 import com.example.javapokemonfx.PokemonService;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
@@ -41,19 +42,24 @@ public class TeamCreationView {
     @Autowired
     private ApplicationContext applicationContext;
 
-    private List<Pokemon> allPokemons;
+    private List<Pokemon> allPokemons = new ArrayList<>();
     private List<Pokemon> selectedPokemons;
     private List<List<Pokemon>> teams;
 
     public void initialize() {
         allPokemons = new ArrayList<>();
         selectedPokemons = new ArrayList<>();
+
+        pokemonListView.setItems(FXCollections.observableArrayList());
         teams = new ArrayList<>();
 
+        fetchPokemonList();
         pokemonListView.getSelectionModel().setSelectionMode(javafx.scene.control.SelectionMode.MULTIPLE);
         pokemonListView.setOnMouseClicked(event -> handleSelection());
 
-        fetchPokemonList();
+        updatePokemonList();
+        Platform.runLater(this::updatePokemonList);
+
     }
 
     private void fetchPokemonList() {
@@ -61,11 +67,11 @@ public class TeamCreationView {
         pokemonService.fetchPokemonList(20, 0);
     }
 
+
     private void handleSelection() {
         List<String> selectedItems = pokemonListView.getSelectionModel().getSelectedItems();
         selectedPokemons.clear();
 
-        // Check if the selected list contains up to 6 Pokémon
         for (String selectedItem : selectedItems) {
             if (selectedPokemons.size() < 6) {
                 Pokemon selectedPokemon = allPokemons.stream()
@@ -87,38 +93,23 @@ public class TeamCreationView {
             teams.add(new ArrayList<>(selectedPokemons));
             statusLabel.setText("Team created with 6 Pokémon!");
 
-            // Display the team information in TextArea
             StringBuilder teamInfo = new StringBuilder("Your Team:\n");
             for (Pokemon pokemon : selectedPokemons) {
                 teamInfo.append(pokemon.getName()).append("\n");
             }
-            teamDisplayArea.setText(teamInfo.toString());
-            teamDisplayArea.setVisible(true);  // Make TextArea visible
+            Platform.runLater(() -> {
+                teamDisplayArea.setText(teamInfo.toString());
+                teamDisplayArea.setVisible(true);  // Ensure TextArea is visible
+            });
 
-            // Optionally, show a pop-up alert
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Team Created");
-            alert.setHeaderText("You have successfully created a team of Pokémon!");
-            alert.setContentText("Your team contains " + selectedPokemons.size() + " Pokémon.");
-            alert.showAndWait();
+            Alert teamAlert = new Alert(Alert.AlertType.INFORMATION);
+            teamAlert.setTitle("Your Team");
+            teamAlert.setHeaderText("Here is your team of Pokémon:");
+            teamAlert.setContentText(teamInfo.toString());
+            teamAlert.showAndWait();
         } else {
             statusLabel.setText("Please select exactly 6 Pokémon.");
         }
-    }
-
-    private void displayTeam() {
-        List<Pokemon> lastTeam = teams.get(teams.size() - 1);
-
-        StringBuilder teamInfo = new StringBuilder("Your Team:\n");
-        for (Pokemon pokemon : lastTeam) {
-            teamInfo.append(pokemon.getName()).append("\n");
-        }
-
-        Alert teamAlert = new Alert(Alert.AlertType.INFORMATION);
-        teamAlert.setTitle("Your Team");
-        teamAlert.setHeaderText("Here is your team of Pokémon:");
-        teamAlert.setContentText(teamInfo.toString());
-        teamAlert.showAndWait();
     }
 
     private void updatePokemonList() {
@@ -134,6 +125,10 @@ public class TeamCreationView {
 
     @EventListener
     public void handlePokemonListEvent(PokemonService.PokemonListEvent event) {
+        if (allPokemons == null) {
+            allPokemons = new ArrayList<>();
+        }
+        //System.out.println("Received PokemonListEvent with names: " + event.pokemonNames());
         Platform.runLater(() -> {
             for (var name : event.pokemonNames()) {
                 pokemonService.fetchAndPrintPokemon(name);
@@ -144,6 +139,10 @@ public class TeamCreationView {
 
     @EventListener
     public void handlePokemonEvent(PokemonService.PokemonInfoEvent event) {
+        if (allPokemons == null) {
+            allPokemons = new ArrayList<>();
+        }
+        //System.out.println("Received PokemonInfoEvent for: " + event.pokemon().getName());
         allPokemons.add(event.pokemon());
         Platform.runLater(this::updatePokemonList);
     }
