@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javapokemonfx.favorite_pokemon_view.FavoritePokemonView">
+    <ListView fx:id="favoritePokemonList"/>
+    <Button text="Back" onAction="#onBackButtonClicked"/>
+</VBox>

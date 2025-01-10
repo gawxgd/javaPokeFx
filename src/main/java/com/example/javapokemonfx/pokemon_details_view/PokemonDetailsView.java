@@ -15,6 +15,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Component
 public class PokemonDetailsView {
     public static final String viewName = "Pokemon Details";
@@ -38,6 +41,9 @@ public class PokemonDetailsView {
     @FXML
     private Button backButton;
 
+    @FXML
+    private Button addToFavoritesButton;
+
     @Autowired
     private PokemonService pokemonService;
 
@@ -47,6 +53,8 @@ public class PokemonDetailsView {
     private String pokemonNameId = "pikachu";
     private String baseImageUrl = "";
     private int happinessLevel = 1;
+
+    private Set<String> favoritePokemonSet = new HashSet<>();
 
 
     // Set the details for the selected Pokémon
@@ -147,6 +155,28 @@ public class PokemonDetailsView {
         } catch (Exception e) {
             throw new IllegalArgumentException("Invalid URL format: cannot find ID in the URL", e);
         }
+    }
+
+    @FXML
+    private void onAddToFavoritesButtonClicked() {
+        if (!favoritePokemonSet.contains(pokemonNameId)) {
+            favoritePokemonSet.add(pokemonNameId);
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Added to Favorites");
+            alert.setHeaderText("You have added " + pokemonNameId + " to your favorites!");
+            alert.setContentText("You can view it in the 'Favorite Pokémon' section.");
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Already a Favorite");
+            alert.setHeaderText(pokemonNameId + " is already in your favorites!");
+            alert.showAndWait();
+        }
+    }
+
+    public Set<String> getFavoritePokemonSet() {
+        return favoritePokemonSet;
     }
 
 

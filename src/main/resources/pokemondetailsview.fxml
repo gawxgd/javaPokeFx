@@ -12,6 +12,7 @@
         <Label fx:id="pokemonHeight" style="-fx-font-size: 18px;" />
         <Label fx:id="pokemonWeight" style="-fx-font-size: 18px;" />
         <Button text="Feed Pokémon" onAction="#onFeedButtonClicked" style="-fx-font-size: 16px; -fx-padding: 10 20;" />
+        <Button fx:id="addToFavoritesButton" text="Add to Favorites" onAction="#onAddToFavoritesButtonClicked"/>
         <Button text="Back to List" onAction="#onBackButtonClicked" style="-fx-font-size: 16px; -fx-padding: 10 20;" />
     </VBox>
 </StackPane>
