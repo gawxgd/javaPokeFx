@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="root" alignment="CENTER" xmlns:fx="com.example.javapokemonfx.battle_view.BattleView">
+<VBox fx:id="root" alignment="CENTER" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.javapokemonfx.battle_view.BattleView">
     <Label fx:id="teamLabel" text="Your Team" />
     <ListView fx:id="playerPokemonList" />
     <Label fx:id="opponentLabel" text="Opponent's Team" />

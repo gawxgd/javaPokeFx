@@ -91,7 +91,7 @@ public class TeamCreationView {
             }
         }
 
-        statusLabel.setText("Selected " + selectedPokemons.size() + " Pokémon");
+        statusLabel.setText("Selected " + selectedPokemons.size() + " Pokémon, please choose " + (6 - selectedPokemons.size()) + " Pokemon more");
     }
 
     @FXML
@@ -157,7 +157,6 @@ public class TeamCreationView {
     @FXML
     private void handleStartBattle() {
         if (selectedPokemons.size() == 6) {
-            // Przejdź do BattlePage, wysyłając drużynę
             applicationContext.publishEvent(new StartBattleEvent(this, selectedPokemons));
             switchViewToBattle();
         } else {
