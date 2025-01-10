@@ -1,6 +1,8 @@
 package com.example.javapokemonfx.battle_view;
 
 import com.example.javapokemonfx.PokemonService;
+import com.example.javapokemonfx.controllers.MainController;
+import com.example.javapokemonfx.team_creation_view.TeamCreationView;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -125,6 +127,21 @@ public class BattleView {
         }
 
         return null;
+    }
+
+    @FXML
+    private void handleNewTeam() {
+        playerTeam = new ArrayList<>();
+
+        playerPokemonList.getItems().clear();
+        opponentPokemonList.getItems().clear();
+
+        switchToTeamCreationView();
+    }
+
+    private void switchToTeamCreationView() {
+        MainController mainController = applicationContext.getBean(MainController.class);
+        mainController.switchView(TeamCreationView.viewName);
     }
 
 }
