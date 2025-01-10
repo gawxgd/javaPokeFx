@@ -6,6 +6,7 @@ import com.example.javapokemonfx.berry_list_view.BerryListView;
 import com.example.javapokemonfx.pokemon_details_view.PokemonDetailsView;
 import com.example.javapokemonfx.pokemon_list_view.PokemonListView;
 import com.example.javapokemonfx.team_creation_view.TeamCreationView;
+import com.example.javapokemonfx.favorite_pokemon_view.FavoritePokemonView;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListView;
@@ -34,7 +35,8 @@ public class MainController {
     @FXML
     public void initialize() {
         // Add navigation items
-        sidebar.getItems().addAll(MainView.viewName, PokemonListView.viewName, BerryListView.viewName, TeamCreationView.viewName);
+        sidebar.getItems().addAll(MainView.viewName, PokemonListView.viewName, BerryListView.viewName,
+                TeamCreationView.viewName, FavoritePokemonView.viewName);
 
         // Handle sidebar selection
         sidebar.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
@@ -70,6 +72,7 @@ public class MainController {
             case BerryListView.viewName -> NavigateToBerriesList();
             case TeamCreationView.viewName -> NavigateToTeamCreation();
             case BattleView.viewName -> NavigateToBattle();
+            case FavoritePokemonView.viewName -> NavigateToFavorite();
 
             default -> throw new IllegalArgumentException("Unknown view: " + viewName);
         }
@@ -77,6 +80,16 @@ public class MainController {
 
     private void NavigateToBattle() {
         FXMLLoader battleLoader = new FXMLLoader(getClass().getResource(BattleView.fxmlName));
+        battleLoader.setControllerFactory(applicationContext::getBean);
+        try {
+            contentArea.getChildren().add(battleLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void NavigateToFavorite() {
+        FXMLLoader battleLoader = new FXMLLoader(getClass().getResource(FavoritePokemonView.fxmlName));
         battleLoader.setControllerFactory(applicationContext::getBean);
         try {
             contentArea.getChildren().add(battleLoader.load());
