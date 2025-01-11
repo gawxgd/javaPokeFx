@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -12,8 +13,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class MainView {
 
-    public static final String viewName = "Main View";
+    public static final String viewName = "Fetch random pokemon";
     public static final String fxmlName = "/mainview.fxml";
+    public ImageView pokemonImage;
 
     @FXML
     private Button helloButton;
@@ -32,9 +34,9 @@ public class MainView {
     }
 
     public void fetchPokemonInfo() {
-        String pokemonName = "pikachu";
+        pokemonService.fetchPokemonList(60, 0);
+        String pokemonName = pokemonService.getRandomPokemon().getName();
         pokemonService.fetchAndPrintPokemon(pokemonName);
-
         pokemonInfoLabel.setText("Fetching " + pokemonName + " data...");
     }
 
