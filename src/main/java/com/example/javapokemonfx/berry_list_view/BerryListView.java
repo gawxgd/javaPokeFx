@@ -1,10 +1,12 @@
 package com.example.javapokemonfx.berry_list_view;
 
 import com.example.javapokemonfx.PokemonService;
+import com.example.javapokemonfx.berry_details_view.BerryDetailsView;
 import com.example.javapokemonfx.controllers.MainController;
 import com.example.javapokemonfx.pokemon_details_view.PokemonDetailsView;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -25,6 +27,7 @@ public class BerryListView {
     public static final String viewName = "Berry List";
     public static final String fxmlName = "/berrylistview.fxml";
     public static final String afterFeedViewName = "Feeded Pokemon";
+    public Button clearFiltersButton;
 
     @FXML
     private TextField filterTextField;
@@ -107,10 +110,9 @@ public class BerryListView {
         }
     }
 
-    private void switchViewToBerryDetails(String pokemonName) {
+    private void switchViewToBerryDetails(String selectedBerry) {
         MainController mainController = applicationContext.getBean(MainController.class);
-       // mainController.switchView(PokemonDetailsView.viewName, pokemonName);
-        Berry a = new Berry();
+        mainController.switchView(BerryDetailsView.viewName, selectedBerry);
     }
 
     private void switchViewToFeedPokemon(String pokemonName) {

@@ -5,6 +5,7 @@ import com.example.javapokemonfx.controllers.MainController;
 import com.example.javapokemonfx.pokemon_details_view.PokemonDetailsView;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 public class PokemonListView {
     public static final String viewName = "Pokemon List";
     public static final String fxmlName = "/pokemonlistview.fxml";
+    public Button clearFiltersButton;
 
     @FXML
     private TextField filterTextField;

@@ -3,8 +3,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Button?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javapokemonfx.favorite_pokemon_view.FavoritePokemonView">
-    <ListView fx:id="favoritePokemonList"/>
-    <Button text="Delete" onAction="#onDeleteButtonClicked"/>
-    <Button text="Clear List" onAction="#onClearButtonClicked"/>
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javapokemonfx.favorite_pokemon_view.FavoritePokemonView" spacing="15" style="-fx-background-color: #f5f5f5; -fx-padding: 20;">
+    <!-- Favorite Pokémon List -->
+    <ListView fx:id="favoritePokemonList" style="-fx-background-color: #ffffff; -fx-border-color: #cccccc; -fx-border-width: 1; -fx-font-size: 16px; -fx-padding: 10; -fx-pref-height: 300;" />
+
+    <!-- Delete Button -->
+    <Button text="Delete" onAction="#onDeleteButtonClicked"
+            style="-fx-font-size: 16px; -fx-padding: 10 20; -fx-background-color: #ff6347; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 5;" />
+
+    <!-- Clear List Button -->
+    <Button text="Clear List" onAction="#onClearButtonClicked"
+            style="-fx-font-size: 16px; -fx-padding: 10 20; -fx-background-color: #007bff; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 5;" />
 </VBox>

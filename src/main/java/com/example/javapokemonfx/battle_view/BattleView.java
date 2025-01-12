@@ -5,8 +5,10 @@ import com.example.javapokemonfx.controllers.MainController;
 import com.example.javapokemonfx.team_creation_view.TeamCreationView;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.EventListener;
@@ -17,16 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.springframework.context.ApplicationEvent;
-import skaro.pokeapi.resource.pokemon.Pokemon;
-
-import java.util.List;
-
-
 @Component
 public class BattleView {
     public static final String viewName = "Battle";
     public static final String fxmlName = "/battleview.fxml";
+    public VBox root;
+    public Button fightButton;
+    public Button newTeamButton;
 
     @FXML
     private Label teamLabel;

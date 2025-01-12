@@ -16,6 +16,7 @@ public class MainView {
     public static final String viewName = "Fetch random pokemon";
     public static final String fxmlName = "/mainview.fxml";
     public ImageView pokemonImage;
+    public Label headerLabel;
 
     @FXML
     private Button helloButton;

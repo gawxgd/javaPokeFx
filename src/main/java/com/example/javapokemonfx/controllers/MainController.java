@@ -2,6 +2,7 @@ package com.example.javapokemonfx.controllers;
 
 import com.example.javapokemonfx.MainView;
 import com.example.javapokemonfx.battle_view.BattleView;
+import com.example.javapokemonfx.berry_details_view.BerryDetailsView;
 import com.example.javapokemonfx.berry_list_view.BerryListView;
 import com.example.javapokemonfx.pokemon_details_view.PokemonDetailsView;
 import com.example.javapokemonfx.pokemon_list_view.PokemonListView;
@@ -74,8 +75,33 @@ public class MainController {
             case BattleView.viewName -> NavigateToBattle();
             case FavoritePokemonView.viewName -> NavigateToFavorite();
             case BerryListView.afterFeedViewName -> NavigateToBerriesList(args);
+            case BerryDetailsView.viewName -> NavigateToBerryDetailsView(args);
 
             default -> throw new IllegalArgumentException("Unknown view: " + viewName);
+        }
+    }
+
+    private void NavigateToBerryDetailsView(String args){
+        FXMLLoader berryLoader = new FXMLLoader(getClass().getResource(BerryDetailsView.fxmlName));
+        if(!Objects.equals(args, ""))
+        {
+
+            berryLoader.setControllerFactory(controllerClass -> {
+                if (controllerClass == BerryDetailsView.class) {
+                    BerryDetailsView controller = applicationContext.getBean(BerryDetailsView.class);
+                    controller.setBerryName(args);
+                    return controller;
+                }
+                return null;
+            });
+        }
+        else{
+            berryLoader.setControllerFactory(applicationContext::getBean);
+        }
+        try {
+            contentArea.getChildren().add(berryLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
