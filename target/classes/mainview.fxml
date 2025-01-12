@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.image.ImageView?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javapokemonfx.MainView">
     <!-- Main Content -->
     <center>
@@ -12,6 +13,7 @@
             <Button fx:id="helloButton" text="Fetch Pokémon Info" onAction="#fetchPokemonInfo" StackPane.alignment="TOP_CENTER" />
             <!-- Label to display Pokémon info -->
             <Label fx:id="pokemonInfoLabel" text="Pokemon info will appear here..." maxWidth="400" StackPane.alignment="CENTER" />
+            <ImageView fx:id="pokemonImage" fitWidth="250" fitHeight="250" />
         </StackPane>
     </center>
 </BorderPane>
