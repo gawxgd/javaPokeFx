@@ -65,8 +65,12 @@ public class BerryListView {
 
     public void setPokemonToFeed(String PokemonName)
     {
-        System.out.println("gowno4"+PokemonName);
-        pokemonToFeed = PokemonName;
+        if(!Objects.equals(PokemonName, "")) {
+            pokemonToFeed = PokemonName;
+        }
+        else{
+            pokemonToFeed = "";
+        }
     }
 
     public void initialize() {

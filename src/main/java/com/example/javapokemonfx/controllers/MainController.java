@@ -139,9 +139,7 @@ public class MainController {
     private void NavigateToBerriesList(String args){
         FXMLLoader berriesLoader = new FXMLLoader(getClass().getResource(BerryListView.fxmlName));
 
-        if(!Objects.equals(args, ""))
-        {
-            System.out.println("gowno2" + args);
+
             berriesLoader.setControllerFactory(controllerClass -> {
                 if (controllerClass == BerryListView.class) {
                     BerryListView controller = applicationContext.getBean(BerryListView.class);
@@ -150,10 +148,6 @@ public class MainController {
                 }
                 return null;
             });
-        }
-        else {
-            berriesLoader.setControllerFactory(applicationContext::getBean);
-        }
         try {
             contentArea.getChildren().add(berriesLoader.load());
         } catch (IOException e) {
