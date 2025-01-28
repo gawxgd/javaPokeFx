@@ -10,7 +10,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.Button;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.EventListener;
@@ -41,12 +40,6 @@ public class PokemonDetailsView {
     @FXML
     private Label pokemonWeight;
 
-    @FXML
-    private Button backButton;
-
-    @FXML
-    private Button addToFavoritesButton;
-
     @Autowired
     private PokemonService pokemonService;
 
@@ -60,10 +53,9 @@ public class PokemonDetailsView {
 
     private String feedingName = "";
 
-    private Set<String> favoritePokemonSet = new HashSet<>();
+    private final Set<String> favoritePokemonSet = new HashSet<>();
 
 
-    // Set the details for the selected Pokémon
     public void setPokemonDetails(String pokemonNameId) {
         feedingBerryName = "";
         var pokeArgs = pokemonNameId.split(" ");
@@ -108,7 +100,6 @@ public class PokemonDetailsView {
         pokemonWeight.setText("Weight: " + weight + " kg");
         pokemonImage.setImage(new Image(imageUrl));
 
-        //System.out.println("Generated URL: " + imageUrl);
     }
 
     private void switchViewToBerryList(String pokemonName) {
@@ -150,26 +141,11 @@ public class PokemonDetailsView {
 
         String extensionPart = baseImageUrl.substring(baseImageUrl.lastIndexOf(".png"));
 
-        String evolutionUrl;
-        switch (evolutionStage) {
-            case 1:
-                // Zwykły obrazek
-                evolutionUrl = baseUrlPart + id + extensionPart;
-                break;
-            case 2:
-                // Official artwork
-                evolutionUrl = baseUrlPart + "other/official-artwork/" + id + extensionPart;
-                break;
-            case 3:
-                // Shiny version
-                evolutionUrl = baseUrlPart + "shiny/" + id + extensionPart;
-                break;
-            default:
-                // Domyślnie wracamy do zwykłego obrazka
-                evolutionUrl = baseUrlPart + id + extensionPart;
-        }
-
-        return evolutionUrl;
+        return switch (evolutionStage) {
+            case 2 -> baseUrlPart + "other/official-artwork/" + id + extensionPart;
+            case 3 -> baseUrlPart + "shiny/" + id + extensionPart;
+            default -> baseUrlPart + id + extensionPart;
+        };
     }
 
     public String extractPokemonIdFromUrl(String url) {

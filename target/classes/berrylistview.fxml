@@ -8,18 +8,16 @@
 <?import javafx.scene.control.Button?>
 
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.javapokemonfx.berry_list_view.BerryListView" spacing="20" style="-fx-background-color: #f9f9f9; -fx-padding: 20;">
-    <!-- Status Label for Loading -->
+
     <Label fx:id="statusLabel" text="Loading Berry list..." style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #333;" />
 
-    <!-- Filters Section -->
     <HBox spacing="20" style="-fx-background-color: #ffffff; -fx-padding: 15; -fx-border-radius: 5; -fx-border-color: #cccccc; -fx-border-width: 1;">
-        <!-- Name Filter -->
+
         <VBox spacing="10">
             <Label text="Search by Name" style="-fx-font-size: 14; -fx-font-weight: bold;" />
             <TextField fx:id="filterTextField" promptText="Search by Name" style="-fx-font-size: 14; -fx-padding: 8; -fx-background-color: #f5f5f5;" />
         </VBox>
 
-        <!-- Growth Time Filter (Min/Max) -->
         <VBox spacing="10">
             <Label text="Min Growth" style="-fx-font-size: 14; -fx-font-weight: bold;" />
             <TextField fx:id="minGrowthTimeFilterTextField" promptText="Min Growth" style="-fx-font-size: 14; -fx-padding: 8; -fx-background-color: #f5f5f5;" />
@@ -27,7 +25,6 @@
             <TextField fx:id="maxGrowthTimeFilterTextField" promptText="Max Growth" style="-fx-font-size: 14; -fx-padding: 8; -fx-background-color: #f5f5f5;" />
         </VBox>
 
-        <!-- Harvest Filter (Min/Max) -->
         <VBox spacing="10">
             <Label text="Min Harvest" style="-fx-font-size: 14; -fx-font-weight: bold;" />
             <TextField fx:id="minHarvestFilterTextField" promptText="Min Harvest" style="-fx-font-size: 14; -fx-padding: 8; -fx-background-color: #f5f5f5;" />
@@ -35,7 +32,6 @@
             <TextField fx:id="maxHarvestFilterTextField" promptText="Max Harvest" style="-fx-font-size: 14; -fx-padding: 8; -fx-background-color: #f5f5f5;" />
         </VBox>
 
-        <!-- Gift Filter (Min/Max) -->
         <VBox spacing="10">
             <Label text="Min Gift" style="-fx-font-size: 14; -fx-font-weight: bold;" />
             <TextField fx:id="minGiftFilterTextField" promptText="Min Gift" style="-fx-font-size: 14; -fx-padding: 8; -fx-background-color: #f5f5f5;" />
@@ -44,10 +40,8 @@
         </VBox>
     </HBox>
 
-    <!-- Clear Filters Button -->
     <Button fx:id="clearFiltersButton" text="Clear Filters" onAction="#handleClearFilters"
             style="-fx-background-color: #ffcc00; -fx-text-fill: #333; -fx-font-size: 16; -fx-padding: 10 20; -fx-border-radius: 5; -fx-background-radius: 5; -fx-font-weight: bold; -fx-alignment: center;" />
 
-    <!-- List View for Berry -->
     <ListView fx:id="berryListView" style="-fx-background-color: #ffffff; -fx-border-color: #cccccc; -fx-border-width: 1; -fx-font-size: 14; -fx-padding: 10; -fx-pref-height: 400;" />
 </VBox>

@@ -4,7 +4,6 @@ import com.example.javapokemonfx.PokemonService;
 import com.example.javapokemonfx.berry_list_view.BerryListView;
 import com.example.javapokemonfx.controllers.MainController;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -28,18 +27,16 @@ public class BerryDetailsView {
     @Autowired
     private ApplicationContext applicationContext;
 
-    private String BerryName;
-
-    public BerryDetailsView(PokemonService pokemonService) {
+    public BerryDetailsView() {
     }
 
     public void setBerryName(String BerryName)
     {
-        this.BerryName = BerryName;
-        if(!Objects.equals(this.BerryName, "")) {
+        String berryName1 = BerryName;
+        if(!Objects.equals(berryName1, "")) {
             var berryArgs = BerryName.split(" ");
-            this.BerryName = berryArgs[0];
-            pokemonService.fetchBerry(this.BerryName);
+            berryName1 = berryArgs[0];
+            pokemonService.fetchBerry(berryName1);
         }
     }
 
@@ -54,7 +51,7 @@ public class BerryDetailsView {
         });
     }
 
-    public void onBackButtonClicked(ActionEvent actionEvent) {
+    public void onBackButtonClicked() {
         MainController mainController = applicationContext.getBean(MainController.class);
         mainController.switchView(BerryListView.viewName, "");
     }

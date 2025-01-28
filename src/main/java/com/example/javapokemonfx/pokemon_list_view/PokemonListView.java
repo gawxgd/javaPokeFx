@@ -9,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.EventListener;
@@ -51,16 +50,12 @@ public class PokemonListView {
     @FXML
     private Label statusLabel;
 
-    @FXML
-    private VBox root;
-
     @Autowired
     private PokemonService pokemonService;
 
     @Autowired
     private ApplicationContext applicationContext;
 
-    private List<String> allPokemonNames;
     private List<Pokemon> allPokemons;
 
     public void initialize() {
@@ -78,7 +73,7 @@ public class PokemonListView {
 
     private void fetchPokemonList() {
         statusLabel.setText("Fetching Pokémon list...");
-        pokemonService.fetchPokemonList(20, 0); // Fetch 20 Pokémon starting from offset 0
+        pokemonService.fetchPokemonList();
     }
 
     private void handleSelection() {
@@ -112,7 +107,7 @@ public class PokemonListView {
 
     private void filterPokemonList() {
         if (allPokemons != null) {
-            String nameFilter = filterTextField.getText().toLowerCase();
+            var nameFilter = filterTextField.getText().toLowerCase();
 
             int minHeight = parseInteger(minHeightFilterTextField.getText(), 0);
             int maxHeight = parseInteger(maxHeightFilterTextField.getText(), Integer.MAX_VALUE);
@@ -127,21 +122,16 @@ public class PokemonListView {
                     .filter(Objects::nonNull)
                     .filter(pokemon -> pokemon.getName().toLowerCase().contains(nameFilter)) // Filter by name
 
-                    // Filter by height if in bounds
                     .filter(pokemon -> isWithinBounds(pokemon.getHeight(), minHeight, maxHeight))
 
-                    // Filter by weight if in bounds
                     .filter(pokemon -> isWithinBounds(pokemon.getWeight(), minWeight, maxWeight))
 
-                    // Filter by experience if in bounds
                     .filter(pokemon -> isWithinBounds(pokemon.getBaseExperience(), minExperience, maxExperience))
 
-                    // Format the filtered Pokémon into a string
                     .map(pokemon -> String.format("%s (Height: %d, Weight: %d, Exp: %d)",
                             pokemon.getName(), pokemon.getHeight(), pokemon.getWeight(), pokemon.getBaseExperience()))
                     .collect(Collectors.toList());
 
-            // Update the ListView
             pokemonListView.getItems().setAll(filteredPokemon);
         }
     }
@@ -187,11 +177,10 @@ public class PokemonListView {
             allPokemons = new ArrayList<>();
         }
         Platform.runLater(() -> {
-            allPokemonNames = event.pokemonNames();
             for(var name : event.pokemonNames()){
                 pokemonService.fetchAndPrintPokemon(name);
             }
-            filterPokemonList();  // Apply the current filters immediately
+            filterPokemonList();
             statusLabel.setText("Pokémon list loaded.");
         });
     }
@@ -206,7 +195,4 @@ public class PokemonListView {
         Platform.runLater(this::PokemonsToNames);
     }
 
-    public VBox getRoot() {
-        return root;
-    }
 }

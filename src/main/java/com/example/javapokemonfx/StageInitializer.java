@@ -1,6 +1,5 @@
 package com.example.javapokemonfx;
 
-import com.example.javapokemonfx.PokeApplication;
 import javafx.stage.Stage;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;

@@ -8,23 +8,18 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.javapokemonfx.team_creation_view.TeamCreationView" spacing="20" style="-fx-background-color: #f5f5f5; -fx-padding: 20;">
 
-    <!-- Status Label -->
     <Label fx:id="statusLabel" text="Select your Pokémon to create a team"
            style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #333; -fx-alignment: center;" />
 
-    <!-- Pokémon List View -->
     <ListView fx:id="pokemonListView" style="-fx-background-color: #ffffff; -fx-border-color: #cccccc; -fx-border-width: 1; -fx-font-size: 16px; -fx-padding: 10; -fx-pref-height: 200;" />
 
-    <!-- Team Display Area -->
     <TextArea fx:id="teamDisplayArea" editable="false" prefHeight="100" prefWidth="300" visible="false"
               promptText="Your created team will be displayed here..."
               style="-fx-background-color: #ffffff; -fx-border-color: #cccccc; -fx-border-width: 1; -fx-font-size: 16px; -fx-padding: 10;" />
 
-    <!-- Create Team Button -->
     <Button text="Create Team" onAction="#handleCreateTeam"
             style="-fx-font-size: 16px; -fx-padding: 10 20; -fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 5;" />
 
-    <!-- Start Battle Button -->
     <Button fx:id="battleButton" text="Start Battle" onAction="#handleStartBattle" visible="false"
             style="-fx-font-size: 16px; -fx-padding: 10 20; -fx-background-color: #007bff; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 5;" />
 

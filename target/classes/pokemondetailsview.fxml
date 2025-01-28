@@ -8,28 +8,21 @@
 
 <StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.javapokemonfx.pokemon_details_view.PokemonDetailsView">
     <VBox alignment="CENTER" spacing="20" style="-fx-background-color: #f5f5f5; -fx-padding: 20;">
-        <!-- Pokémon Image -->
+
         <ImageView fx:id="pokemonImage" fitWidth="250" fitHeight="250" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 8, 0, 4, 4); -fx-background-color: #ffffff; -fx-border-radius: 10; -fx-padding: 10;" />
 
-        <!-- Pokémon Name -->
         <Label fx:id="pokemonName" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #333; -fx-alignment: center;" />
 
-        <!-- Pokémon Base Experience -->
         <Label fx:id="pokemonBaseExperience" style="-fx-font-size: 18px; -fx-font-weight: normal; -fx-text-fill: #666;" />
 
-        <!-- Pokémon Height -->
         <Label fx:id="pokemonHeight" style="-fx-font-size: 18px; -fx-font-weight: normal; -fx-text-fill: #666;" />
 
-        <!-- Pokémon Weight -->
         <Label fx:id="pokemonWeight" style="-fx-font-size: 18px; -fx-font-weight: normal; -fx-text-fill: #666;" />
 
-        <!-- Feed Pokémon Button -->
         <Button text="Feed Pokémon" onAction="#onFeedButtonClicked" style="-fx-font-size: 16px; -fx-padding: 10 20; -fx-background-color: #ffcc00; -fx-text-fill: #333; -fx-font-weight: bold; -fx-border-radius: 5;" />
 
-        <!-- Add to Favorites Button -->
         <Button fx:id="addToFavoritesButton" text="Add to Favorites" onAction="#onAddToFavoritesButtonClicked" style="-fx-font-size: 16px; -fx-padding: 10 20; -fx-background-color: #ff6347; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 5;" />
 
-        <!-- Back to List Button -->
         <Button text="Back to List" onAction="#onBackButtonClicked" style="-fx-font-size: 16px; -fx-padding: 10 20; -fx-background-color: #007bff; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 5;" />
     </VBox>
 </StackPane>

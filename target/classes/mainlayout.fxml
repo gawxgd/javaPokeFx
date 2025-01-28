@@ -7,7 +7,6 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.javapokemonfx.controllers.MainController"
             style="-fx-background-color: #f8f9fa; -fx-padding: 10;">
     <left>
-        <!-- Sidebar ListView -->
         <ListView fx:id="sidebar"
                   style="-fx-background-color: #ffffff;
                          -fx-border-color: #cccccc;
@@ -17,13 +16,12 @@
                   prefWidth="200" />
     </left>
     <center>
-        <!-- Main Content Area -->
         <StackPane fx:id="contentArea"
                    style="-fx-background-color: #ffffff;
                           -fx-border-color: #cccccc;
                           -fx-border-width: 1;
                           -fx-padding: 20;">
-            <!-- Placeholder Text -->
+
             <Label text="Select an item from the sidebar..."
                    style="-fx-font-size: 16;
                           -fx-text-fill: #777;" />

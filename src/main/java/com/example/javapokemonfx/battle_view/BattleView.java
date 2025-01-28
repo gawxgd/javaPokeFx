@@ -17,7 +17,6 @@ import skaro.pokeapi.resource.pokemon.Pokemon;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Component
 public class BattleView {
@@ -26,15 +25,13 @@ public class BattleView {
     public VBox root;
     public Button fightButton;
     public Button newTeamButton;
+    public Label opponentLabel;
 
     @FXML
     private Label teamLabel;
 
     @FXML
     private ListView<String> playerPokemonList = new ListView<>();
-
-    @FXML
-    private Label opponentLabel;
 
     @FXML
     private ListView<String> opponentPokemonList = new ListView<>();
@@ -61,10 +58,8 @@ public class BattleView {
         for (Pokemon pokemon : playerTeam) {
             playerTeamNames.add(pokemon.getName());
 
-            //System.out.println(pokemon.getName());
         }
 
-        //playerPokemonList.getItems().setAll(playerTeamNames);
 
         opponentTeam = getRandomOpponentTeam(playerTeam);
         List<String> opponentTeamNames = new ArrayList<>();
@@ -72,7 +67,6 @@ public class BattleView {
             opponentTeamNames.add(pokemon.getName());
         }
 
-        //opponentPokemonList.getItems().setAll(opponentTeamNames);
 
         Platform.runLater(() -> {
             playerPokemonList.getItems().setAll(playerTeamNames);
@@ -83,7 +77,6 @@ public class BattleView {
 
     private List<Pokemon> getRandomOpponentTeam(List<Pokemon> playerTeam) {
         List<Pokemon> randomTeam = new ArrayList<>();
-        Random rand = new Random();
 
         while (randomTeam.size() < 6) {
             Pokemon randomPokemon = pokemonService.getRandomPokemon();

@@ -31,29 +31,18 @@ public class PokemonService {
                 .doOnNext(pokemon -> eventPublisher.publishEvent(new PokemonInfoEvent(pokemon)))
                 .subscribe();
     }
-    public void fetchPokemonList(int limit, int offset) {
+    public void fetchPokemonList() {
         pokeApiClient.getResource(Pokemon.class)
                 .map(NamedApiResourceList::getResults)
                 .map(resources -> resources.stream()
                         .map(NamedApiResource::getName)
                         .collect(Collectors.toList()))
                 .doOnNext(names -> {
-                    availablePokemonNames = names;  // Przechowuj dostępne nazwy Pokémonów
+                    availablePokemonNames = names;
                     eventPublisher.publishEvent(new PokemonListEvent(names));
                 })
                 .subscribe();
     }
-
-    /*public void fetchPokemonList(int limit, int offset) {
-        pokeApiClient.getResource(Pokemon.class)
-                .map(NamedApiResourceList::getResults)
-                .map(resources -> resources.stream()
-                        .map(NamedApiResource::getName)
-                        .collect(Collectors.toList()))
-                .doOnNext(names -> {
-                    eventPublisher.publishEvent(new PokemonListEvent(names));})
-                .subscribe();
-    }*/
 
     public void fetchPokemonDetails(String pokemonId) {
         pokeApiClient.getResource(Pokemon.class, pokemonId)
@@ -95,9 +84,7 @@ public class PokemonService {
         Random random = new Random();
         String randomPokemonName = availablePokemonNames.get(random.nextInt(availablePokemonNames.size()));
 
-        // Pobieranie szczegółów losowego Pokémona
-        Pokemon randomPokemon = pokeApiClient.getResource(Pokemon.class, randomPokemonName).block();
-        return randomPokemon;
+        return pokeApiClient.getResource(Pokemon.class, randomPokemonName).block();
     }
 
 
